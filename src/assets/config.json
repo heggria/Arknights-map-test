@@ -1,0 +1,178 @@
+{
+  "levelName": [
+    {
+      "title": "主线关卡",
+      "items": [
+        {
+          "action": "local_activity",
+          "title": "序章",
+          "name": "黑暗时代·上",
+          "items": [
+            {
+              "title": "0-1"
+            }
+          ]
+        },
+        {
+          "action": "local_activity",
+          "title": "第一章",
+          "name": "黑暗时代·下",
+          "items": [
+            {
+              "title": "1-1"
+            }
+          ]
+        },
+        {
+          "action": "restaurant",
+          "title": "第二章",
+          "name": "异卵同生",
+          "active": true,
+          "items": [
+            {
+              "title": "2-1"
+            }
+          ]
+        },
+        {
+          "action": "school",
+          "title": "第三章",
+          "name": "二次呼吸",
+          "items": [
+            {
+              "title": "3-1"
+            }
+          ]
+        },
+        {
+          "action": "directions_run",
+          "title": "第四章",
+          "name": "急性衰竭",
+          "items": [
+            {
+              "title": "4-1"
+            }
+          ]
+        },
+        {
+          "action": "healing",
+          "title": "第五章",
+          "name": "靶向药物",
+          "items": [
+            {
+              "title": "5-1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "剿灭作战",
+      "items": [
+        {
+          "title": "龙门市区"
+        }
+      ]
+    },
+    {
+      "title": "物资筹备",
+      "items": [
+        {
+          "action": "content_cut",
+          "title": "战术演习",
+          "name": "录像带",
+          "items": [
+            {
+              "title": "LS-1 遭遇战演习"
+            }
+          ]
+        },
+        {
+          "action": "content_cut",
+          "title": "货物运送",
+          "name": "龙门币",
+          "items": [
+            {
+              "title": "CE-1 私人家具押运"
+            }
+          ]
+        },
+        {
+          "action": "content_cut",
+          "title": "粉碎防御",
+          "name": "红票",
+          "items": [
+            {
+              "title": "AP-1 源石开采保全"
+            }
+          ]
+        },
+        {
+          "action": "content_cut",
+          "title": "资源保障",
+          "name": "家具币&碳",
+          "items": [
+            {
+              "title": "SK-1 废墟清剿"
+            }
+          ]
+        },
+        {
+          "action": "content_cut",
+          "title": "空中威胁",
+          "name": "技能书",
+          "items": [
+            {
+              "title": "CA-1 疗养用地净空"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "芯片搜索",
+      "items": [
+        {
+          "action": "content_cut",
+          "title": "固若金汤",
+          "name": "医疗&重装芯片",
+          "items": [
+            {
+              "title": "PR-A-1 防守"
+            }
+          ]
+        },
+        {
+          "action": "content_cut",
+          "title": "摧枯拉朽",
+          "name": "狙击&术士芯片",
+          "items": [
+            {
+              "title": "PR-B-1 干涉"
+            }
+          ]
+        },
+        {
+          "action": "content_cut",
+          "title": "势不可当",
+          "name": "先锋&辅助芯片",
+          "items": [
+            {
+              "title": "PR-C-1 急行"
+            }
+          ]
+        },
+        {
+          "action": "content_cut",
+          "title": "身先士卒",
+          "name": "近卫&特种芯片",
+          "items": [
+            {
+              "title": "PR-D-1 突破"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

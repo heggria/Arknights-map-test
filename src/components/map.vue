@@ -1,25 +1,15 @@
 <template>
-<div id="box">
-  <v-container>
-    <v-row class="mb-6" no-gutters>
-      <v-col :lg="6" :md="6" :sm="12">
-        <div class="main" id="main">
-          <div v-for="(item,key1) in mapDiv.map" :key="key1" class="divRow">
-            <div v-for="(i,key2) in item" :key="key2" class="divRow">
-              <mapD :type="mapDiv.tiles[i].tileKey" :index="i"></mapD>
-            </div>
-          </div>
-          <div style="clear:both"></div>
+  <div id="box">
+    <div class="main" id="main">
+      <div v-for="(item,key1) in mapDiv.map" :key="key1" class="divRow">
+        <div v-for="(i,key2) in item" :key="key2" class="divRow">
+          <mapD :type="mapDiv.tiles[i].tileKey" :index="i"></mapD>
         </div>
-      </v-col>
-      <v-col :lg="6" :md="6" :sm="12">
-        <div class="opeation">
-          <v-btn text small>Normal</v-btn>
-        </div>
-      </v-col>
-    </v-row>
-  </v-container>
-</div>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+    <div class="opeation"></div>
+  </div>
 </template>
 
 <script>
@@ -29,7 +19,7 @@ import range1 from "@/assets/range_table.json";
 export default {
   data() {
     return {
-      mapDiv: this.$store.state.mapMeta.mapData
+      mapDiv: this.$store.state.mapMeta.mapData,
     };
   },
   components: { mapD: mapD },
@@ -158,35 +148,6 @@ export default {
           }
         }
     },
-    forbiddenDisplayChange() {
-      if (this.$store.state.mapMeta.forbiddenDisplay === true) {
-        let flag1 = document.getElementsByClassName("block");
-        if (flag1 != undefined && flag1.length > 0)
-          for (let div = 0; div < flag1.length; div++) {
-            let a = flag1[div];
-            a.classList.remove("tile_forbidden");
-          }
-        this.$store.state.mapMeta.forbiddenDisplay = false;
-      } else {
-        let flag1 = document.getElementsByClassName("block");
-        if (flag1 != undefined && flag1.length > 0)
-          for (let div = 0; div < flag1.length; div++) {
-            let a = flag1[div];
-            a.classList.add("tile_forbidden");
-          }
-        this.$store.state.mapMeta.forbiddenDisplay = true;
-      }
-    }
-  },
-  computed: {
-    change() {
-      return this.$store.state.mapMeta.attackDisplay;
-    }
-  },
-  watch: {
-    change: function(val) {
-      // console.log(1);
-    }
   }
 };
 </script>
@@ -197,7 +158,7 @@ export default {
 ::after {
   box-sizing: unset;
 }
-#box{
+#box {
   min-width: 800px;
 }
 .divRow {
@@ -208,8 +169,11 @@ export default {
   margin: 15px;
   border: 1px black solid;
   padding: 4px 5px 5px 4px;
+  float: left;
 }
 .opeation {
-  width: 100%;
+  float: left;
+  width: 30%;
+  margin: 0;
 }
 </style>
