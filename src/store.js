@@ -1,13 +1,15 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import level from "@/assets/levels/obt/campaign/level_camp_02.json";
+import level from "@/assets/levels/obt/campaign/level_camp_03.json";
 Vue.use(Vuex);
 const state = {
   choose: 0,
   buttonCofig: [],
   interfaceV: {
     chooseMD:false,
-    settingDisplay:false
+    settingDisplay: false,
+    chooseED: false,
+    addE:false
   },
   display: true,
   mapMeta: {

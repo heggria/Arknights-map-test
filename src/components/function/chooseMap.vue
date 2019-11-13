@@ -4,7 +4,7 @@
       <div style="font-size:20px;">选择地图</div>
       <v-spacer></v-spacer>
       <v-btn icon @click.stop="$store.state.interfaceV.chooseMD = !$store.state.interfaceV.chooseMD">
-        <v-icon>mdi-close</v-icon>
+        <v-icon>mdi-check</v-icon>
       </v-btn>
     </v-list-item>
     <v-divider></v-divider>

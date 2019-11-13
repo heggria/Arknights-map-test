@@ -78,8 +78,8 @@ document.oncontextmenu = function() {
 <style>
 :root {
   --stripe-size: 30.5px;
-  --color0: rgba(194, 78, 0, 0.466);
-  --color1: rgba(194, 0, 0, 0.466);
+  --color0: rgba(194, 78, 0, 0.5);
+  --color1: rgba(194, 0, 0, 0.5);
   --color2: #00000000;
   --duration: 1s;
 }
@@ -103,14 +103,10 @@ document.oncontextmenu = function() {
 }
 .mapdiv:hover {
   border: 3px black solid;
-  height: 54px;
-  width: 54px;
   line-height: 54px;
 }
 .mapdiv:active {
   border: 4px black solid;
-  height: 52px;
-  width: 52px;
   line-height: 52px;
   background-color: rgb(211, 197, 0);
 }
@@ -201,13 +197,13 @@ div.high > div:hover {
   background-color: rgb(255, 100, 100);
 }
 .tile_road {
-  background-color: rgb(140, 200, 140);
+  background-color: rgb(80, 201, 126);
 }
 .tile_end {
   background-color: rgb(100, 100, 255);
 }
 .tile_wall {
-  background-color: rgb(0, 200, 200);
+  background-color: rgb(100, 233, 233);
 }
 .tile_floor {
   background-color: rgb(180, 180, 180);
@@ -226,8 +222,8 @@ div.high > div:hover {
 }
 .high {
   border: 2px black solid;
-  height: 56px;
-  width: 56px;
+  height: 60px;
+  width: 60px;
   line-height: 56px;
 }
 .tile_hole {

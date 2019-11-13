@@ -1,14 +1,11 @@
 <template>
-  <div id="box">
-    <div class="main" id="main">
-      <div v-for="(item,key1) in mapDiv.map" :key="key1" class="divRow">
-        <div v-for="(i,key2) in item" :key="key2" class="divRow">
-          <mapD :type="mapDiv.tiles[i].tileKey" :index="i"></mapD>
-        </div>
+  <div class="main" id="main">
+    <div v-for="(item,key1) in mapDiv.map" :key="key1" class="divRow">
+      <div v-for="(i,key2) in item" :key="key2" class="divRow">
+        <mapD :type="mapDiv.tiles[i].tileKey" :index="i"></mapD>
       </div>
-      <div style="clear:both"></div>
     </div>
-    <div class="opeation"></div>
+    <div style="clear:both"></div>
   </div>
 </template>
 
@@ -19,7 +16,7 @@ import range1 from "@/assets/range_table.json";
 export default {
   data() {
     return {
-      mapDiv: this.$store.state.mapMeta.mapData,
+      mapDiv: this.$store.state.mapMeta.mapData
     };
   },
   components: { mapD: mapD },
@@ -28,12 +25,14 @@ export default {
       charBaseData: {}, //干员基础数据
       position: -1, //部署位置
       deployLocation: 3, //1地面，2高台，3都可以
-      range: range1["3-2"] //攻击范围和方向
+      range: range1["5-2"] //攻击范围和方向
     };
     this.init();
     this.$nextTick(function() {
       document.getElementById("main").style.width =
-        61 * this.mapDiv.map[0].length + "px";
+        61 * this.mapDiv.map[0].length + 12 + "px";
+      document.getElementById("app").style["min-width"] =
+        61 * this.mapDiv.map[0].length + 12 + 30 + "px";
     });
   },
   methods: {
@@ -147,20 +146,12 @@ export default {
             a.classList.add("attack2");
           }
         }
-    },
+    }
   }
 };
 </script>
 
 <style>
-*,
-::before,
-::after {
-  box-sizing: unset;
-}
-#box {
-  min-width: 800px;
-}
 .divRow {
   float: left;
 }
@@ -170,10 +161,5 @@ export default {
   border: 1px black solid;
   padding: 4px 5px 5px 4px;
   float: left;
-}
-.opeation {
-  float: left;
-  width: 30%;
-  margin: 0;
 }
 </style>

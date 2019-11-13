@@ -12,7 +12,7 @@
         icon
         @click.stop="$store.state.interfaceV.settingDisplay = !$store.state.interfaceV.settingDisplay"
       >
-        <v-icon>mdi-close</v-icon>
+        <v-icon>mdi-check</v-icon>
       </v-btn>
     </v-list-item>
     <v-divider></v-divider>
