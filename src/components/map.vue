@@ -5,12 +5,7 @@
         <mapD :type="mapDiv.tiles[i].tileKey" :index="i"></mapD>
       </div>
     </div>
-    <div class="cont">
-      <svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
-        <path d="M 30 91 L 152 91 L 152 152 L 701 152" />
-      </svg>
-      <div class="rect"></div>
-    </div>
+    <svgPath></svgPath>
     <div style="clear:both"></div>
   </div>
 </template>
@@ -18,13 +13,14 @@
 <script>
 /* eslint-disable */
 import mapD from "@/components/part/mapDiv";
+import svgPath from "@/components/part/svgPath";
 export default {
   data() {
     return {
       mapDiv: this.$store.state.mapMeta.mapData
     };
   },
-  components: { mapD: mapD },
+  components: { mapD, svgPath },
   created() {
     this.init();
     this.$nextTick(function() {
@@ -61,16 +57,30 @@ export default {
     },
     ClockwiseRotate(val) {
       if (val === true) {
-        if (this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction <= 3) {
-          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction += 1;
+        if (
+          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range
+            .direction <= 3
+        ) {
+          this.$store.state.mapMeta.char[
+            this.$store.state.chooseEIndex
+          ].range.direction += 1;
         } else {
-          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction = 1;
+          this.$store.state.mapMeta.char[
+            this.$store.state.chooseEIndex
+          ].range.direction = 1;
         }
       } else {
-        if (this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction > 1) {
-          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction -= 1;
+        if (
+          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range
+            .direction > 1
+        ) {
+          this.$store.state.mapMeta.char[
+            this.$store.state.chooseEIndex
+          ].range.direction -= 1;
         } else {
-          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction = 4;
+          this.$store.state.mapMeta.char[
+            this.$store.state.chooseEIndex
+          ].range.direction = 4;
         }
       }
       this.setAttackArea();
@@ -151,41 +161,6 @@ export default {
 </script>
 
 <style>
-.cont {
-  width: 100px;
-  float: left;
-  padding: 0;
-  position: absolute;
-  z-index: 0;
-  pointer-events: none;
-}
-.cont svg {
-  background: rgb(219, 219, 219, 0);
-}
-.cont svg path {
-  stroke: red;
-  stroke-width: 3;
-  fill: none;
-}
-@keyframes svg-path-animation {
-  from {
-    offset-distance: 0%;
-  }
-  to {
-    offset-distance: 100%;
-  }
-}
-.cont .rect {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 16px;
-  height: 8px;
-  background: rgb(255, 255, 255);
-  offset-path: path("M 701 152 L 152 152 L 152 91 L 30 91");
-  offset-distance: 0%;
-  animation: svg-path-animation 5s ease-in-out 0s infinite normal none;
-}
 .divRow {
   float: left;
 }

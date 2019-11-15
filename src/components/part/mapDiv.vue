@@ -17,7 +17,7 @@
         }"
       @mouseover="mouseover()"
       @mouseout="mouseout()"
-    ></div>
+    >{{index}}</div>
   </div>
 </template>
 

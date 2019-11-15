@@ -12,18 +12,19 @@ const state = {
     addE: false
   },
   display: true,
-  chooseEIndex:0,
+  chooseEIndex: 0,
   mapMeta: {
     mapOptions: level.options,
     mapName: '龙门市区',
     mapData: level.mapData,
+    routesData: level.routes,
     runData: [],
     attackDisplay: true,
     forbiddenDisplay: true,
     char: {},
     globalBuffs: [],//全体buff
     routes: level.routes,
-    enemies:{}
+    enemies: {}
   }
 };
 const getters = {
