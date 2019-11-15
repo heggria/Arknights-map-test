@@ -6,19 +6,24 @@ const state = {
   choose: 0,
   buttonCofig: [],
   interfaceV: {
-    chooseMD:false,
+    chooseMD: false,
     settingDisplay: false,
     chooseED: false,
-    addE:false
+    addE: false
   },
   display: true,
+  chooseEIndex:0,
   mapMeta: {
+    mapOptions: level.options,
     mapName: '龙门市区',
     mapData: level.mapData,
     runData: [],
     attackDisplay: true,
     forbiddenDisplay: true,
-    char: {}
+    char: {},
+    globalBuffs: [],//全体buff
+    routes: level.routes,
+    enemies:{}
   }
 };
 const getters = {

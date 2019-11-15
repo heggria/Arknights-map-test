@@ -53,13 +53,7 @@ export default {
   data: () => ({
     dialog: false
   }),
-  created() {
-    this.$store.state.mapMeta.char = [
-      { name: "艾雅法拉", rate: 6, elite: 2, level: 90 },
-      { name: "银灰", rate: 6, elite: 2, level: 90 },
-      { name: "能天使", rate: 6, elite: 2, level: 90 }
-    ];
-  },
+  created() {},
   methods: {
     mapChoose(index) {
       this.$store.state.mapMeta.mapName = index;

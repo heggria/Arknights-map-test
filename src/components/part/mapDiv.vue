@@ -50,11 +50,15 @@ export default {
     deployLocationChange() {
       if (
         this.$store.state.mapMeta.runData[this.index].type ===
-          this.$store.state.mapMeta.char.deployLocation ||
+          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex]
+            .deployLocation ||
         (this.$store.state.mapMeta.runData[this.index].type > 0 &&
-          this.$store.state.mapMeta.char.deployLocation === 3)
+          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex]
+            .deployLocation === 3)
       ) {
-        this.$store.state.mapMeta.char.position = this.index;
+        this.$store.state.mapMeta.char[
+          this.$store.state.chooseEIndex
+        ].position = this.index;
         this.$parent.setAttackArea();
       }
     },

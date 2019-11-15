@@ -5,6 +5,12 @@
         <mapD :type="mapDiv.tiles[i].tileKey" :index="i"></mapD>
       </div>
     </div>
+    <div class="cont">
+      <svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+        <path d="M 30 91 L 152 91 L 152 152 L 701 152" />
+      </svg>
+      <div class="rect"></div>
+    </div>
     <div style="clear:both"></div>
   </div>
 </template>
@@ -12,7 +18,6 @@
 <script>
 /* eslint-disable */
 import mapD from "@/components/part/mapDiv";
-import range1 from "@/assets/range_table.json";
 export default {
   data() {
     return {
@@ -21,12 +26,6 @@ export default {
   },
   components: { mapD: mapD },
   created() {
-    this.$store.state.mapMeta.char = {
-      charBaseData: {}, //干员基础数据
-      position: -1, //部署位置
-      deployLocation: 3, //1地面，2高台，3都可以
-      range: range1["5-2"] //攻击范围和方向
-    };
     this.init();
     this.$nextTick(function() {
       document.getElementById("main").style.width =
@@ -62,16 +61,16 @@ export default {
     },
     ClockwiseRotate(val) {
       if (val === true) {
-        if (this.$store.state.mapMeta.char.range.direction <= 3) {
-          this.$store.state.mapMeta.char.range.direction += 1;
+        if (this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction <= 3) {
+          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction += 1;
         } else {
-          this.$store.state.mapMeta.char.range.direction = 1;
+          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction = 1;
         }
       } else {
-        if (this.$store.state.mapMeta.char.range.direction > 1) {
-          this.$store.state.mapMeta.char.range.direction -= 1;
+        if (this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction > 1) {
+          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction -= 1;
         } else {
-          this.$store.state.mapMeta.char.range.direction = 4;
+          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range.direction = 4;
         }
       }
       this.setAttackArea();
@@ -86,7 +85,7 @@ export default {
     },
     setAttackArea() {
       this.initMap();
-      let t = this.$store.state.mapMeta.char;
+      let t = this.$store.state.mapMeta.char[this.$store.state.chooseEIndex];
       let position = t.position;
       let direction = t.range.direction;
       let grids = t.range.grids;
@@ -121,7 +120,7 @@ export default {
         }
       }
       this.$store.state.mapMeta.runData[
-        this.$store.state.mapMeta.char.position
+        this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].position
       ].attackPlace = 1;
       this.animationResart();
     },
@@ -152,6 +151,41 @@ export default {
 </script>
 
 <style>
+.cont {
+  width: 100px;
+  float: left;
+  padding: 0;
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+.cont svg {
+  background: rgb(219, 219, 219, 0);
+}
+.cont svg path {
+  stroke: red;
+  stroke-width: 3;
+  fill: none;
+}
+@keyframes svg-path-animation {
+  from {
+    offset-distance: 0%;
+  }
+  to {
+    offset-distance: 100%;
+  }
+}
+.cont .rect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 8px;
+  background: rgb(255, 255, 255);
+  offset-path: path("M 701 152 L 152 152 L 152 91 L 30 91");
+  offset-distance: 0%;
+  animation: svg-path-animation 5s ease-in-out 0s infinite normal none;
+}
 .divRow {
   float: left;
 }
@@ -161,5 +195,6 @@ export default {
   border: 1px black solid;
   padding: 4px 5px 5px 4px;
   float: left;
+  position: relative;
 }
 </style>
