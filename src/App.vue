@@ -72,7 +72,6 @@ export default {
         charData: {} //干员战斗过程数据，使用charBattleData计算而来
       }
     ];
-    console.log(this.$store.state.mapMeta.routes[3]);
   },
   methods: {}
 };
