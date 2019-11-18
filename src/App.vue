@@ -24,6 +24,7 @@
       </v-btn>
     </v-app-bar>
     <mapP style="float:left;"></mapP>
+    <!--
     <v-card style="float:left;width:40px;height:300px;margin:15px 0 0 0;" tile>
       <v-btn
         icon
@@ -34,6 +35,9 @@
     </v-card>
     <mapOpeationD></mapOpeationD>
     <chooseEmployee></chooseEmployee>
+    -->
+    <wave></wave>
+
     <chooseMap></chooseMap>
     <settings></settings>
   </div>
@@ -45,11 +49,12 @@ import settings from "@/components/function/settings.vue";
 import chooseMap from "@/components/function/chooseMap.vue";
 import chooseEmployee from "@/components/function/chooseEmployee.vue";
 import mapOpeationD from "@/components/display/mapOpeationDisplay.vue";
+import wave from "@/components/display/waves.vue";
 import range1 from "@/assets/range_table.json";
 export default {
   /* eslint-disable */
   name: "App",
-  components: { settings, chooseMap, chooseEmployee, mapP, mapOpeationD },
+  components: { settings, chooseMap, chooseEmployee, mapP, mapOpeationD,wave },
   data: () => ({
     test: false
   }), //

@@ -18,12 +18,14 @@ const state = {
     mapName: '龙门市区',
     mapData: level.mapData,
     routesData: level.routes,
+    globalBuffs: [],//全体buff
+    routes: level.routes,
+    baseEnemiesData: level.enemyDbRefs,
+    waves: level.waves,
     runData: [],
     attackDisplay: true,
     forbiddenDisplay: true,
     char: {},
-    globalBuffs: [],//全体buff
-    routes: level.routes,
     enemies: {}
   }
 };
