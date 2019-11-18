@@ -1,24 +1,15 @@
 <template>
-  <div class="cont">
-    <svg id="cont" xmlns="http://www.w3.org/2000/svg">
-      <path id="path1" :d="string" />
-      <circle
-        v-for="(i,index) in points.check"
-        :key="'circle-'+index"
-        class="circle"
-        :cx="i[0]"
-        :cy="i[1]"
-      />
-      <text
-        v-for="(j,index) in points.check"
-        :key="'text-'+index"
-        id="text1"
-        :x="j[0]"
-        :y="j[1]"
-        class="text"
-      >{{j[3]+'s'}}</text>
+  <div class="contianer">
+    <svg id="contianer" xmlns="http://www.w3.org/2000/svg">
+      <g v-for="(x,ind) in index" :key="'path-'+ind">
+        <path :d="pathStr[ind]" />
+        <g v-for="(i,index) in points[ind].check" :key="'circle-'+index">
+          <circle v-if="i[2]!==0" class="circle" :cx="i[0]" :cy="i[1]" />
+          <text v-if="i[2]!==0" :x="i[0]" :y="i[1]" class="text">{{i[3]+'s'}}</text>
+        </g>
+      </g>
     </svg>
-    <div id="rect1"></div>
+    <div v-for="(x,ind) in index" :key="'rect-'+ind" class="rect" :id="'rect'+ind"></div>
   </div>
 </template>
 
@@ -26,41 +17,50 @@
 /* eslint-disable */
 export default {
   data: () => ({
-    index: [35],
-    points: {},
-    string: "M 30 91 L 152 91 L 152 152 L 701 152"
+    index: [3, 4, 5, 6, 7],
+    points: [],
+    pathStr: []
   }),
   created() {
     this.$nextTick(function() {
-      document.getElementById("cont").style["width"] =
+      document.getElementById("contianer").style["width"] =
         61 * this.$store.state.mapMeta.mapData.map[0].length + "px";
-      document.getElementById("cont").style["height"] =
+      document.getElementById("contianer").style["height"] =
         61 * this.$store.state.mapMeta.mapData.map.length + "px";
-      this.init();
+      for (let i = 0; i < this.pathStr.length; i++) {
+        document.getElementById("rect" + i).style["offset-path"] =
+          'path("' + this.pathStr[i] + '")';
+      }
     });
+    this.init();
   },
   methods: {
     init() {
+      for (let a = 0; a < this.index.length; a++) {
+        //保存//console.log(rd,this.points);
+        this.points[a] = this.getPoint(
+          this.$store.state.mapMeta.routesData[this.index[a]]
+        );
+        this.pathStr[a] = this.pathSave(this.points[a]);
+      }
+    },
+    getPoint(rd) {
       let points = {
         start: [],
         check: [],
         end: []
       };
-      let x = this.index[0];
-      let rd = this.$store.state.mapMeta.routesData[x];
-      points.start[0] = this.positionExchange(rd.startPosition.col);
-      points.start[1] = this.positionExchange(rd.startPosition.row);
+      points.start[0] = this.positionExc(rd.startPosition.col);
+      points.start[1] = this.positionExc(rd.startPosition.row);
       for (let i in rd.checkpoints) {
         i = parseInt(i);
         if (
-          !(
-            rd.checkpoints[i].position.col === 0 &&
-            rd.checkpoints[i].position.row === 0
-          )
+          rd.checkpoints[i].position.col !== 0 &&
+          rd.checkpoints[i].position.row !== 0
         ) {
           let point = [0, 0, 0, 0];
-          point[0] = this.positionExchange(rd.checkpoints[i].position.col);
-          point[1] = this.positionExchange(rd.checkpoints[i].position.row);
+          point[0] = this.positionExc(rd.checkpoints[i].position.col);
+          point[1] = this.positionExc(rd.checkpoints[i].position.row);
           if (
             i < rd.checkpoints.length - 1 &&
             rd.checkpoints[i + 1].position.col === 0 &&
@@ -72,21 +72,19 @@ export default {
           points.check.push(point);
         }
       }
-      points.end[0] = this.positionExchange(rd.endPosition.col);
-      points.end[1] = this.positionExchange(rd.endPosition.row);
-      this.points = points;
-      this.string = " M" + this.points.start[0] + " " + this.points.start[1];
-      console.log(rd);
-      console.log(this.points);
-      for (let i in this.points.check) {
-        this.string +=
-          " L" + this.points.check[i][0] + " " + this.points.check[i][1];
-      }
-      this.string += " L" + this.points.end[0] + " " + this.points.end[1];
-      document.getElementById("rect1").style["offset-path"] =
-        'path("' + this.string + '")';
+      points.end[0] = this.positionExc(rd.endPosition.col);
+      points.end[1] = this.positionExc(rd.endPosition.row);
+      return points;
     },
-    positionExchange(i) {
+    pathSave(points) {
+      let string = " M" + points.start[0] + " " + points.start[1];
+      for (let i in points.check) {
+        string += " L" + points.check[i][0] + " " + points.check[i][1];
+      }
+      string += " L" + points.end[0] + " " + points.end[1];
+      return string;
+    },
+    positionExc(i) {
       return 30 + i * 61;
     }
   }
@@ -94,20 +92,19 @@ export default {
 </script>
 
 <style>
-.cont {
+.contianer {
   width: 100px;
   float: left;
   padding: 0;
   position: absolute;
-  z-index: 0;
   pointer-events: none;
 }
-.cont svg {
+.contianer svg {
   background: rgb(219, 219, 219, 0);
 }
-.cont svg path {
+.contianer svg path {
   stroke: red;
-  stroke-width: 3;
+  stroke-width: 2.5;
   fill: none;
 }
 @keyframes svg-path-animation {
@@ -118,7 +115,7 @@ export default {
     offset-distance: 100%;
   }
 }
-.cont #rect1 {
+.contianer .rect {
   position: absolute;
   top: 0;
   left: 0;
