@@ -68,9 +68,10 @@ export default {
         level: 90,
         skill: 3,
         skillLevel: 10,
-        position: -1, //部署位置
+        position: 32, //部署位置
         deployLocation: 2, //1地面，2高台，3都可以
         range: range1["3-1"], //攻击范围和方向
+        skillRange: range1["y-2"], //攻击范围和方向
         charBaseData: {}, //干员基础数据，从解包数据复制而来
         charPanelData: {}, //干员面板数据，使用charBaseData计算而来
         charBattleData: {}, //干员实时战斗面板数据，使用charPanelData计算而来

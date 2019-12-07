@@ -2,6 +2,7 @@
   <div class="main" id="main">
     <div v-for="(item,key1) in mapDiv.map" :key="key1" class="divRow">
       <div v-for="(i,key2) in item" :key="key2" class="divRow">
+        <employeeSvg v-if="i===$store.state.mapMeta.char[0].position" style="top:0.5px;left:0.5px;z-index:2"></employeeSvg>
         <mapD :type="mapDiv.tiles[i].tileKey" :index="i"></mapD>
       </div>
     </div>
@@ -14,14 +15,18 @@
 /* eslint-disable */
 import mapD from "@/components/part/mapDiv";
 import svgPath from "@/components/part/svgPath";
+import employeeSvg from "@/components/part/employeeSvg.vue";
 export default {
   data() {
     return {
       mapDiv: this.$store.state.mapMeta.mapData
     };
   },
-  components: { mapD, svgPath },
+  components: { mapD, svgPath,employeeSvg },
   created() {
+    this.$store.state.mapMeta.char[
+      this.$store.state.chooseEIndex
+    ].range.direction = 1;
     this.init();
     this.$nextTick(function() {
       document.getElementById("main").style.width =
@@ -56,33 +61,18 @@ export default {
       // console.log(this.$store.state.mapMeta.runData);
     },
     ClockwiseRotate(val) {
+      let d = this.$store.state.mapMeta.char[this.$store.state.chooseEIndex]
+        .range.direction;
       if (val === true) {
-        if (
-          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range
-            .direction <= 3
-        ) {
-          this.$store.state.mapMeta.char[
-            this.$store.state.chooseEIndex
-          ].range.direction += 1;
-        } else {
-          this.$store.state.mapMeta.char[
-            this.$store.state.chooseEIndex
-          ].range.direction = 1;
-        }
+        if (d <= 3) d += 1;
+        else d = 1;
       } else {
-        if (
-          this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].range
-            .direction > 1
-        ) {
-          this.$store.state.mapMeta.char[
-            this.$store.state.chooseEIndex
-          ].range.direction -= 1;
-        } else {
-          this.$store.state.mapMeta.char[
-            this.$store.state.chooseEIndex
-          ].range.direction = 4;
-        }
+        if (d > 1) d -= 1;
+        else d = 4;
       }
+      this.$store.state.mapMeta.char[
+        this.$store.state.chooseEIndex
+      ].range.direction = d;
       this.setAttackArea();
     },
     initMap() {
@@ -129,6 +119,7 @@ export default {
           }
         }
       }
+      //
       this.$store.state.mapMeta.runData[
         this.$store.state.mapMeta.char[this.$store.state.chooseEIndex].position
       ].attackPlace = 1;
@@ -163,6 +154,7 @@ export default {
 <style>
 .divRow {
   float: left;
+  position: relative;
 }
 .main {
   user-select: none;

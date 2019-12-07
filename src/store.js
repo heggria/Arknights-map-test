@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import level from "@/assets/levels/obt/campaign/level_camp_03.json";
+import enemyDB from "@/assets/levels/enemydata/enemy_database.json";
 Vue.use(Vuex);
 const state = {
   choose: 0,
@@ -13,6 +14,7 @@ const state = {
   },
   display: true,
   chooseEIndex: 0,
+  enemyDB: enemyDB.enemies,
   mapMeta: {
     mapOptions: level.options,
     mapName: '龙门市区',
@@ -23,6 +25,7 @@ const state = {
     baseEnemiesData: level.enemyDbRefs,
     waves: level.waves,
     runData: [],
+    enemyDBC: {},
     attackDisplay: true,
     forbiddenDisplay: true,
     char: {},

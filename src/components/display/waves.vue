@@ -1,92 +1,157 @@
 <template>
   <div>
-    <v-card style="float:left;width:550px;margin:15px 0 0 0;" tile>
-      <v-card-title>存储对象</v-card-title>
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-left">小波数</th>
-              <th class="text-left">键</th>
-              <th class="text-left">数量</th>
-              <th class="text-left">准备时延</th>
-              <th class="text-left">间隔</th>
-              <th class="text-left">自动寻路</th>
-              <th class="text-left">路径为null</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(i,item) in actions" :key="item">
-              <td>{{ i.n }}</td>
-              <td>{{ i.key }}</td>
-              <td>{{ i.count }}</td>
-              <td>{{ i.preDelay }}</td>
-              <td>{{ i.interval }}</td>
-              <td>{{ i.autoPreviewRoute }}</td>
-              <td>{{ $store.state.mapMeta.routes[i.routeIndex]===null }}</td>
-            </tr>
-          </tbody>
+    <v-card style="float:left;width:460px;margin:15px 0 0 0;" tile>
+      <v-card-title>时间轴：{{this.$store.state.mapMeta.waves[this.w].name===null?'默认':this.$store.state.mapMeta.waves[this.w].name}} 波次</v-card-title>
+      <v-data-table
+        dense
+        :headers="headers"
+        :items="timeAxis"
+        :items-per-page="20"
+        item-key="n"
+        show-select
+      >
+        <template v-slot:item.id="item">
+          <p>{{getName(item.value)}}</p>
         </template>
-      </v-simple-table>
-    </v-card>
-    <v-card style="float:left;width:300px;margin:15px 0 0 0;" tile>
-      <v-card-title>时间轴</v-card-title>
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-left">编号</th>
-              <th class="text-left">id</th>
-              <th class="text-left">时间点</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(i,item) in timeAxis" :key="item">
-              <td>{{ i.n }}</td>
-              <td>{{ i.id }}</td>
-              <td>{{ i.time }}</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
+      </v-data-table>
     </v-card>
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   data() {
     return {
       actions: [],
-      timeAxis: []
+      timeAxis: [],
+      headers: [
+        { text: "序号", value: "n", width: 70 },
+        { text: "名字", value: "id", width: 250 },
+        { text: "时间点", value: "time", width: 80, sortable: true }
+      ],
+      timeBWave: [],
+      selected: [],
+      w: 0
     };
   },
   created() {
+    this.getEnemyData();
     let n = 0;
-    let wave = this.$store.state.mapMeta.waves[3];
+    let coefficient = 1;
+    let wave = this.$store.state.mapMeta.waves[this.w];
+    let sumTime = wave.preDelay;
     for (let i = 0; i < wave.fragments.length; i++) {
+      sumTime += wave.fragments[i].preDelay * coefficient;
+      console.log(wave.fragments[i].preDelay);
       for (let j = 0; j < wave.fragments[i].actions.length; j++) {
-        let time = 0;
         wave.fragments[i].actions[j].n = i + 1;
-        this.actions.push(wave.fragments[i].actions[j]);
-        for (let k = 0; k < wave.fragments[i].actions[j].count; k++) {
-          if (
-            this.$store.state.mapMeta.routes[
-              wave.fragments[i].actions[j].routeIndex
-            ] !== null
-          ) {
+        if (
+          this.$store.state.mapMeta.routes[
+            wave.fragments[i].actions[j].routeIndex
+          ] !== null &&
+          wave.fragments[i].actions[j].actionType !== 1
+        ) {
+          this.actions.push(wave.fragments[i].actions[j]);
+          for (let k = 0; k < wave.fragments[i].actions[j].count; k++) {
             n++;
-            time =
-              wave.fragments[i].actions[j].preDelay +
-              k * wave.fragments[i].actions[j].interval;
+            let time = wave.fragments[i].actions[j].preDelay;
+            if (k !== 0) time += wave.fragments[i].actions[j].interval * k;
             this.timeAxis.push({
-              n: n,
+              n: i + 1 + "/" + n,
+              d: wave.fragments[i].actions[j].preDelay,
+              sd: wave.fragments[i].preDelay,
               id: wave.fragments[i].actions[j].key,
-              time: time
+              time: (sumTime + time).toFixed(3)
             });
           }
         }
       }
+      let sum = 0;
+      for (let index = 0; index < wave.fragments[i].actions.length; index++) {
+        let flagx =
+          wave.fragments[i].actions[index].preDelay +
+          (wave.fragments[i].actions[index].count - 1) *
+            wave.fragments[i].actions[index].interval;
+        if (sum <= flagx) sum = flagx;
+      }
+      sumTime += sum;
+    }
+    //console.log(this.timeAxis);
+  },
+  methods: {
+    getEnemyData() {
+      let enemyDBC = [];
+      for (let i in this.$store.state.mapMeta.baseEnemiesData) {
+        for (let j in this.$store.state.enemyDB) {
+          if (
+            this.$store.state.enemyDB[j].Key ===
+            this.$store.state.mapMeta.baseEnemiesData[i].id
+          ) {
+            if (
+              this.$store.state.mapMeta.baseEnemiesData[i].overwrittenData ===
+              null
+            ) {
+              enemyDBC.push({
+                id: this.$store.state.enemyDB[j].Key,
+                level: this.$store.state.mapMeta.baseEnemiesData[i].level,
+                value: this.$store.state.enemyDB[j].Value[
+                  this.$store.state.mapMeta.baseEnemiesData[i].level
+                ].enemyData,
+                correction: false
+              });
+            } else {
+              let def = this.$store.state.mapMeta.baseEnemiesData[i]
+                .overwrittenData;
+              for (let key in def) {
+                //console.log(def[key]);
+                if (
+                  def[key] !== null &&
+                  def[key].m_defined !== undefined &&
+                  def[key].m_defined === false
+                ) {
+                  def[key] = this.$store.state.enemyDB[j].Value[
+                    this.$store.state.mapMeta.baseEnemiesData[i].level
+                  ].enemyData[key];
+                } else {
+                  for (let key2 in def["attributes"]) {
+                    if (def["attributes"][key2].m_defined === false) {
+                      def["attributes"][key2] = this.$store.state.enemyDB[
+                        j
+                      ].Value[
+                        this.$store.state.mapMeta.baseEnemiesData[i].level
+                      ].enemyData["attributes"][key2];
+                    }
+                  }
+                }
+                enemyDBC.push({
+                  id: this.$store.state.enemyDB[j].Key,
+                  level: this.$store.state.mapMeta.baseEnemiesData[i].level,
+                  value: this.$store.state.mapMeta.baseEnemiesData[i]
+                    .overwrittenData,
+                  correction: true
+                });
+                break;
+              }
+            }
+          }
+        }
+      }
+      this.$store.state.mapMeta.enemyDBC = enemyDBC;
+      //console.log(enemyDBC);
+    },
+    getDName(value) {
+      for (let i in this.$store.state.mapMeta.enemyDBC) {
+        if (this.$store.state.mapMeta.enemyDBC[i].id === value)
+          return this.$store.state.mapMeta.enemyDBC[i].value.name.m_value;
+      }
+    }
+  },
+  computed: {
+    getName() {
+      return function(value) {
+        return this.getDName(value);
+      };
     }
   }
 };

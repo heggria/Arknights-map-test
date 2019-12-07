@@ -2,6 +2,7 @@
   <div
     :class="['mapdiv',type,type==='tile_wall'||type==='tile_flystart'||type==='tile_hole'?'high':'','block']"
     @click="onclick()"
+    @mousedown="mousedown()"
     @mouseover="mouseover()"
     @mouseout="mouseout()"
     @mouseup="mouseup()"
@@ -13,11 +14,15 @@
         attack1:(this.$store.state.mapMeta.runData[this.index].attackPlace===1&&this.$store.state.mapMeta.attackDisplay===true),
         attack2:(this.$store.state.mapMeta.runData[this.index].attackPlace===2&&this.$store.state.mapMeta.attackDisplay===true),
         hoverall:hover,//hover:all
-        clickall:click,
         }"
-      @mouseover="mouseover()"
-      @mouseout="mouseout()"
-    >{{index}}</div>
+      style="text-align:left;"
+    >
+      <img
+        v-if="index===this.$store.state.mapMeta.char[0].position"
+        class="eImg eContainer"
+        src="@/assets/img/head/艾雅法拉.png"
+      />
+    </div>
   </div>
 </template>
 
@@ -62,15 +67,21 @@ export default {
         this.$parent.setAttackArea();
       }
     },
+    mousedown(){
+      this.click = true;
+    },
     mouseover() {
       this.hover = true;
     },
     mouseout() {
       this.hover = false;
-      this.click = false;
     },
     mouseup() {
       this.click = false;
+    },
+    print(){
+      if(this.index===this.$store.state.mapMeta.char[0].position)
+      console.log('hover/'+this.hover,'click/'+this.click);
     }
   }
 }; /*
@@ -86,9 +97,6 @@ document.oncontextmenu = function() {
   --color1: rgba(194, 0, 0, 0.5);
   --color2: #00000000;
   --duration: 1s;
-}
-.block {
-  background-color: white;
 }
 .heightdiv {
   position: absolute;
@@ -106,37 +114,17 @@ document.oncontextmenu = function() {
   overflow: hidden;
 }
 .mapdiv:hover {
-  border: 3px black solid;
+  border: 2px black dashed;
   line-height: 54px;
 }
 .mapdiv:active {
-  border: 4px black solid;
-  line-height: 52px;
-  background-color: rgb(211, 197, 0);
-}
-div.high > div:hover {
-  position: absolute;
-  left: -3px;
-  top: -3px;
+  border: 2px rgb(255, 255, 255) solid;
+  line-height: 54px;
 }
 .hoverall {
   position: absolute;
-  left: -3px;
-  top: -3px;
-}
-.clickall {
-  position: absolute;
-  left: -4px;
-  top: -4px;
-}
-.attack1,
-.attack2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 100%;
-  height: 100%;
+  left: -2px;
+  top: -2px;
 }
 .attack1::before,
 .attack2::before {
@@ -169,16 +157,6 @@ div.high > div:hover {
   );
   background-size: var(--stripe-size) var(--stripe-size);
 }
-@-webkit-keyframes stripeTransform {
-  0% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
-  100% {
-    -webkit-transform: translateX(calc(var(--stripe-size) * -1));
-    transform: translateX(calc(var(--stripe-size) * -1));
-  }
-}
 @keyframes stripeTransform {
   0% {
     -webkit-transform: translateX(0);
@@ -193,6 +171,9 @@ div.high > div:hover {
   height: 60px;
   width: 60px;
   overflow: hidden;
+}
+.high {
+  border: 2px black solid;
 }
 .tile_forbidden {
   background-color: rgb(100, 100, 100);
@@ -223,12 +204,6 @@ div.high > div:hover {
 }
 .tile_healing {
   background-color: rgb(0, 168, 76);
-}
-.high {
-  border: 2px black solid;
-  height: 60px;
-  width: 60px;
-  line-height: 56px;
 }
 .tile_hole {
   background-color: white;
